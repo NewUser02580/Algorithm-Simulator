@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheduling Calculator</title>
+    <link rel="stylesheet" href="style3.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .button-group {
+            text-align: center;
+        }
+        .button-group button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button-group button:hover {
+            background-color: #ddd;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .gant-chart {
+            display: flex;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            position: relative;
+        }
+        .gant-chart div {
+            border-right: 1px solid #000;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+        }
+        .gant-chart div:last-child {
+            border-right: none;
+        }
+        .gant-chart span {
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            font-size: 12px;
+        }
+        .average-waiting-time {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Scheduling Calculator</h1>
+    <div class="container">
+        <div class="input-group">
+            <label for="processes">Enter Processes (comma-separated, e.g., P1,P2,P3):</label>
+            <input type="text" id="processes" placeholder="e.g., P1,P2,P3">
+        </div>
+        <div class="input-group">
+            <label for="burst-times">Enter Burst Times (comma-separated, e.g., 5,8,3):</label>
+            <input type="text" id="burst-times" placeholder="e.g., 5,8,3">
+        </div>
+        <div class="input-group">
+            <label for="quantum">Enter Time Quantum (for Round Robin):</label>
+            <input type="number" id="quantum" placeholder="e.g., 2">
+        </div>
+        <div class="button-group">
+            <button onclick="simulateFCFS()">Simulate FCFS</button>
+            <button onclick="simulateSJF()">Simulate SJF</button>
+            <button onclick="simulateRR()">Simulate Round Robin</button>
+        </div>
+        <div class="results">
+            <h2>Results</h2>
+            <table id="results-table">
+                <thead>
+                    <tr>
+                        <th>Process</th>
+                        <th>Waiting Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Results will be dynamically added here -->
+                </tbody>
+            </table>
+            <div class="gant-chart" id="gant-chart">
+                <!-- Gantt chart will be dynamically added here -->
+            </div>
+            <div class="average-waiting-time" id="average-waiting-time">
+                <!-- Average waiting time will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function clearResults() {
+            const tableBody = document.querySelector('#results-table tbody');
+            tableBody.innerHTML = '';
+            const gantChart = document.getElementById('gant-chart');
+            gantChart.innerHTML = '';
+            const avgWaitingTimeDiv = document.getElementById('average-waiting-time');
+            avgWaitingTimeDiv.textContent = '';
+        }
+
+        function addResult(process, waitingTime) {
+            const tableBody = document.querySelector('#results-table tbody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${process}</td>
+                <td>${waitingTime}</td>
+            `;
+            tableBody.appendChild(row);
+        }
+
+        function addGanttChart(processes, burstTimes) {
+            const gantChart = document.getElementById('gant-chart');
+            let currentTime = 0;
+
+            processes.forEach((process, index) => {
+                const block = document.createElement('div');
+                block.style.flex = burstTimes[index];
+                block.textContent = process;
+                const timeLabel = document.createElement('span');
+                timeLabel.textContent = currentTime;
+                block.appendChild(timeLabel);
+                currentTime += burstTimes[index];
+                gantChart.appendChild(block);
+            });
+
+            const endTimeLabel = document.createElement('span');
+            endTimeLabel.textContent = currentTime;
+            endTimeLabel.style.position = 'absolute';
+            endTimeLabel.style.bottom = '-20px';
+            endTimeLabel.style.right = '0';
+            gantChart.appendChild(endTimeLabel);
+        }
+
+        function displayAverageWaitingTime(waitingTimes) {
+            const avgWaitingTime = waitingTimes.reduce((sum, wt) => sum + wt, 0) / waitingTimes.length;
+            const avgWaitingTimeDiv = document.getElementById('average-waiting-time');
+            avgWaitingTimeDiv.textContent = `Average Waiting Time: ${avgWaitingTime.toFixed(2)} units`;
+        }
+
+        function simulateFCFS() {
+            clearResults();
+            const processes = document.getElementById('processes').value.split(',');
+            const burstTimes = document.getElementById('burst-times').value.split(',').map(Number);
+
+            let currentTime = 0;
+            const waitingTimes = [];
+
+            processes.forEach((process, index) => {
+                const waitingTime = currentTime;
+                waitingTimes.push(waitingTime);
+
+                addResult(process, waitingTime);
+                currentTime += burstTimes[index];
+            });
+
+            addGanttChart(processes, burstTimes);
+            displayAverageWaitingTime(waitingTimes);
+        }
+
+        function simulateSJF() {
+            clearResults();
+            const processes = document.getElementById('processes').value.split(',');
+            const burstTimes = document.getElementById('burst-times').value.split(',').map(Number);
+
+            const sortedIndices = burstTimes.map((bt, index) => ({ bt, index }))
+                .sort((a, b) => a.bt - b.bt)
+                .map(obj => obj.index);
+
+            let currentTime = 0;
+            const waitingTimes = [];
+
+            sortedIndices.forEach(index => {
+                const process = processes[index];
+                const waitingTime = currentTime;
+                waitingTimes.push(waitingTime);
+
+                addResult(process, waitingTime);
+                currentTime += burstTimes[index];
+            });
+
+            addGanttChart(sortedIndices.map(i => processes[i]), sortedIndices.map(i => burstTimes[i]));
+            displayAverageWaitingTime(waitingTimes);
+        }
+
+        function simulateRR() {
+            clearResults();
+            const processes = document.getElementById('processes').value.split(',');
+            const burstTimes = document.getElementById('burst-times').value.split(',').map(Number);
+            const quantum = parseInt(document.getElementById('quantum').value);
+
+            const remainingBurstTimes = [...burstTimes];
+            const waitingTimes = Array(processes.length).fill(0);
+
+            let currentTime = 0;
+            const ganttProcesses = [];
+            const ganttTimes = [];
+
+            while (remainingBurstTimes.some(bt => bt > 0)) {
+                processes.forEach((process, index) => {
+                    if (remainingBurstTimes[index] > 0) {
+                        ganttProcesses.push(process);
+                        const timeSpent = Math.min(quantum, remainingBurstTimes[index]);
+                        ganttTimes.push(timeSpent);
+
+                        currentTime += timeSpent;
+                        remainingBurstTimes[index] -= timeSpent;
+
+                        if (remainingBurstTimes[index] === 0) {
+                            waitingTimes[index] = currentTime - burstTimes[index];
+                        }
+                    }
+                });
+            }
+
+            processes.forEach((process, index) => {
+                addResult(process, waitingTimes[index]);
+            });
+
+            addGanttChart(ganttProcesses, ganttTimes);
+            displayAverageWaitingTime(waitingTimes);
+        }
+    </script>
+</body>
+</html>

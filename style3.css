@@ -1,0 +1,218 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(120deg, #f6d365, #fda085);
+    color: #333;
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+h1 {
+    font-size: 42px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 30px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: fadeIn 2s ease-in-out;
+}
+
+/* Container for the form and results */
+.container {
+    width: 80%;
+    max-width: 900px;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    margin-top: 40px;
+    backdrop-filter: blur(10px);
+    animation: slideUp 1s ease-out;
+}
+
+/* Input Group */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    font-size: 18px;
+    color: #555;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+    letter-spacing: 1px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: 2px solid #fda085;
+    background-color: #f4f7fc;
+    color: #333;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: #f6d365;
+    box-shadow: 0 0 5px rgba(253, 160, 133, 0.7);
+}
+
+/* Button Group */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.button-group button {
+    padding: 15px 30px;
+    font-size: 16px;
+    background-color: #fda085;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.button-group button:hover {
+    background-color: #f6d365;
+    transform: scale(1.05);
+}
+
+.button-group button:active {
+    transform: scale(1);
+}
+
+/* Results Table */
+.results {
+    margin-top: 40px;
+    font-size: 16px;
+    color: #333;
+}
+
+.results h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #fda085;
+}
+
+.results table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.results th,
+.results td {
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.results th {
+    background-color: #fda085;
+    color: #fff;
+    font-weight: bold;
+}
+
+.results td {
+    background-color: #f9f9f9;
+}
+
+.results td.hit {
+    color: #e74c3c;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Gantt Chart */
+.gant-chart {
+    display: flex;
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    position: relative;
+}
+
+.gant-chart div {
+    border-right: 1px solid #000;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+}
+
+.gant-chart div:last-child {
+    border-right: none;
+}
+
+.gant-chart span {
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    font-size: 12px;
+}
+
+/* Average Waiting Time */
+.average-waiting-time {
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 18px;
+    color: #f6d365;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .button-group button {
+        width: 100%;
+    }
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithm Simulators</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #74dbf2dc;
+            color: rgb(25, 183, 231);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin: 6;
+            text-align: center; /* Ensures heading is centered */
+        }
+        .container {
+            margin: 50px auto;
+            max-width: 600px;
+        }
+        .option {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .button-group {
+            margin-top: 20px;
+        }
+        .button-group button {
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: #0078d7;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .button-group button:hover {
+            background-color: #005bb5;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Algorithm Simulator</h1>
+    </header>
+    <div class="container">
+        <div class="option">
+            <h2>Page Replacement Simulator</h2>
+            <p>Simulate page replacement algorithms like FIFO, LRU, and Optimal.</p>
+            <div class="button-group">
+                <button onclick="window.location.href='page_replacement.html'">Explore Page Replacement</button>
+            </div>
+        </div>
+        <div class="option">
+            <h2>Scheduling Calculator</h2>
+            <p>Simulate scheduling algorithms like FCFS, SJF, and Round Robin.</p>
+            <div class="button-group">
+                <button onclick="window.location.href='scheduling_calculator.html'">Explore Scheduling</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
